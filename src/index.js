@@ -27,8 +27,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src="${toy.image}" class="toy-avatar"/>
             <p>Likes: ${toy.likes ? toy.likes : 0}</p>
             <button class="button">LIKE</button>
+    
           `;
           toysDiv.appendChild(card);
+          const likeBtn = card.querySelector(".button");
+          likeBtn.addEventListener("click", () => {
+            console.log(toy.likes);
+            console.log(toy);
+            toy.likes++;
+            addLikes(toy);
+            console.log(toy.likes);
+          });
         });
       });
   }
@@ -51,6 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  //Function to add likes
+  function addLikes(toy) {
+    fetch(`http://localhost:3000/toys/${toy.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ likes: toy.likes }),
+    });
+  }
+
   showToys();
   addNewToy();
 });
