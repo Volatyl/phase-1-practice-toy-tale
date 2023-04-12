@@ -25,13 +25,32 @@ document.addEventListener("DOMContentLoaded", () => {
           card.innerHTML = `
             <h2>${toy.name}</h2>
             <img src="${toy.image}" class="toy-avatar"/>
-            <p>Likes: ${toy.likes}</p>
+            <p>Likes: ${toy.likes ? toy.likes : 0}</p>
             <button class="button">LIKE</button>
           `;
           toysDiv.appendChild(card);
-          console.log(card);
         });
       });
   }
+
+  //Function to add new toy
+  function addNewToy() {
+    const form = document.querySelector(".add-toy-form");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      console.log(formData);
+      fetch("http://localhost:3000/toys", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    });
+  }
   showToys();
+  addNewToy();
 });
